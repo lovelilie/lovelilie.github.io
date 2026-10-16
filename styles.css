@@ -1,0 +1,212 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Ayami palette */
+  --color-taupe: var(--taupe);
+  --color-dusty-blue: var(--dusty-blue);
+  --color-olive: var(--olive);
+  --color-cream: var(--cream);
+  --color-blush: var(--blush);
+  --color-cocoa: var(--cocoa);
+  --color-polaroid: var(--polaroid);
+
+  --font-script: "Great Vibes", cursive;
+  --font-display: "Lora", Georgia, serif;
+  --font-sans: "Libertinus Sans", "Lora", Georgia, sans-serif;
+}
+
+:root {
+  --radius: 0.25rem;
+  --taupe: oklch(0.74 0.035 62);      /* #c1aa95 */
+  --dusty-blue: oklch(0.85 0.018 220); /* #c3d1d6 */
+  --olive: oklch(0.65 0.08 102);       /* #9f9356 */
+  --cream: oklch(0.94 0.03 105);       /* #efefdc */
+  --blush: oklch(0.86 0.03 30);        /* #e6ceca */
+  --cocoa: oklch(0.36 0.06 40);        /* deep brown for readable text */
+  --polaroid: oklch(0.9 0.008 90);
+
+  --background: var(--cream);
+  --foreground: oklch(0.3 0.03 50);
+  --card: oklch(0.97 0.015 100);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  --primary: var(--cocoa);
+  --primary-foreground: var(--cream);
+  --secondary: var(--blush);
+  --secondary-foreground: var(--cocoa);
+  --muted: oklch(0.91 0.025 100);
+  --muted-foreground: oklch(0.48 0.04 55);
+  --accent: var(--olive);
+  --accent-foreground: var(--cream);
+  --destructive: oklch(0.55 0.18 27);
+  --destructive-foreground: var(--cream);
+  --border: oklch(0.8 0.03 70);
+  --input: oklch(0.6 0.03 60);
+  --ring: var(--olive);
+
+  /* Page header colours: each fades from its colour at the top into the cream page */
+  --hero-blue: oklch(0.83 0.02 245);
+  --hero-pink: oklch(0.82 0.025 20);
+  --hero-green: #9d9566; /* sampled from Ayami's Canva "Contact Me" header */
+
+  --gradient-contact: linear-gradient(180deg, var(--olive) 0%, var(--olive) 35%, var(--cream) 100%);
+  --shadow-polaroid: 0 10px 24px -10px oklch(0.3 0.03 50 / 0.35);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body { overflow-x: hidden; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+}
+
+@utility font-script { font-family: var(--font-script); font-weight: 400; }
+
+@utility polaroid {
+  background: var(--polaroid);
+  padding: 0.75rem 0.75rem 2.75rem;
+  box-shadow: var(--shadow-polaroid);
+}
+
+@utility tracking-wide-display { letter-spacing: 0.25em; }
+
+/* ---------- Rabbit ---------- */
+/* One gallop cycle = 0.72s: eight silhouettes traced from Ayami's own pose
+   strip, morphed into each other while the body arcs through the air. */
+@keyframes rabbit-cross {
+  from { transform: translateX(-260px); }
+  to { transform: translateX(calc(100vw + 80px)); }
+}
+/* feet stay planted through the compression frames, then pop through the vault */
+@keyframes rabbit-arc {
+  0%     { transform: translateY(-10px) rotate(-1deg); }
+  12.5%  { transform: translateY(-3px)  rotate(1deg); }
+  25%    { transform: translateY(0)     rotate(2deg); }
+  37.5%  { transform: translateY(0)     rotate(1deg); }
+  50%    { transform: translateY(-4px)  rotate(-2deg); }
+  62.5%  { transform: translateY(-22px) rotate(-4deg); }
+  75%    { transform: translateY(-10px) rotate(-1deg); }
+  87.5%  { transform: translateY(-16px) rotate(0deg); }
+  100%   { transform: translateY(-10px) rotate(-1deg); }
+}
+@utility rabbit-track { animation: rabbit-cross 12s linear infinite; }
+@utility rabbit-arc { animation: rabbit-arc 0.72s cubic-bezier(0.45, 0, 0.55, 1) infinite; transform-origin: 50% 94%; }
+
+/* The rabbit is made of three stacked layers that all share one morphing outline
+   (@keyframes rabbit-morph is written by GlassRabbit.tsx):
+   a soft shadow, a thin pale rim, and the frosted pane itself. */
+.rabbit-morph { position: absolute; inset: 0; animation: rabbit-morph 0.72s linear infinite; }
+.rabbit-shadow { position: absolute; inset: 0; transform: translateY(5%); filter: blur(5px); }
+.rabbit-shadow-shape { background: color-mix(in oklab, var(--cocoa) 30%, transparent); }
+.rabbit-rim { background: linear-gradient(145deg, rgb(255 255 255 / 0.95), rgb(190 170 150 / 0.7)); }
+/* frosted glass: blurs and lightens what is behind it, keeps its colour (like the frosted cup) */
+.rabbit-glass {
+  transform: scale(0.972);
+  transform-origin: 50% 62%;
+  -webkit-backdrop-filter: blur(7px) saturate(1.7) brightness(1.05);
+  backdrop-filter: blur(7px) saturate(1.7) brightness(1.05);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.42) 0%, rgb(255 255 255 / 0.14) 50%, rgb(205 190 175 / 0.2) 100%);
+}
+
+/* ---------- Texture & haze ---------- */
+.homepage-lilies { mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%); }
+.footer-lily { mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 100%); }
+@utility haze { filter: saturate(0.45) brightness(1.15) contrast(0.85); }
+/* Ayami's paper grain, tiled across every page like her Canva slide, where one
+   photo was repeated 8 times (4 across, 2 down) to fill the page. The tile is
+   contrast-boosted so the speckle shows up when multiplied over the cream. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  background-image: url("./assets/grain-tile.png");
+  background-size: clamp(240px, 25vw, 480px);
+  background-repeat: repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+/* ---------- Coloured page headers ---------- */
+.hero-blue { background: linear-gradient(180deg, var(--hero-blue) 0%, var(--hero-blue) 28%, var(--cream) 100%); }
+.hero-pink { background: linear-gradient(180deg, var(--hero-pink) 0%, var(--hero-pink) 28%, var(--cream) 100%); }
+.hero-green { background: linear-gradient(180deg, var(--hero-green) 0%, var(--hero-green) 28%, var(--cream) 100%); }
+.hero-custom { background: linear-gradient(180deg, var(--hero-color) 0%, var(--hero-color) 28%, var(--cream) 100%); }
+.hero-title { text-shadow: 0 1px 14px color-mix(in oklab, var(--cocoa) 22%, transparent); }
+
+/* Blinking cursor while a role is being typed */
+.type-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: var(--cocoa);
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+@keyframes caret-blink { 50% { opacity: 0; } }
+
+/* ---------- Polaroid gallery reveal ---------- */
+/* The title and its thin line stay in the layout at all times so nothing jumps;
+   only their visibility changes. Touch screens show them permanently. */
+.pv-line { transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1); }
+.pv-title { opacity: 0; transition: opacity 0.35s ease 0.08s; }
+.group:hover .pv-line, .group:focus-visible .pv-line { transform: scaleX(1); }
+.group:hover .pv-title, .group:focus-visible .pv-title { opacity: 1; }
+.pv-tape {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 88px;
+  height: 24px;
+  transform: translateX(-50%) rotate(-2deg);
+  background: color-mix(in oklab, var(--cream) 72%, transparent);
+  border-inline: 1px solid color-mix(in oklab, var(--cocoa) 12%, transparent);
+  pointer-events: none;
+}
+@media (hover: none) {
+  .pv-line { transform: scaleX(1); }
+  .pv-title { opacity: 1; }
+}
+
+/* ---------- Marquee ---------- */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@utility marquee { animation: marquee 28s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rabbit-track, .rabbit-arc, .rabbit-morph, .marquee, .type-caret { animation: none; }
+  .rabbit-track { display: none; }
+}
