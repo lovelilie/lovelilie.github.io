@@ -12,7 +12,7 @@ export function SiteFooter() {
         loading="lazy"
         width={1594}
         height={899}
-        className="footer-lily pointer-events-none absolute bottom-0 left-1/2 w-[780px] max-w-[130%] -translate-x-1/2 translate-y-[10%]"
+        className="footer-lily pointer-events-none absolute bottom-0 left-1/2 w-[780px] max-w-[130%] -translate-x-1/2"
       />
       <div className="relative mx-auto grid max-w-5xl gap-10 px-6 pb-10 md:grid-cols-2">
         <h2 className="font-display text-5xl tracking-wide-display text-cocoa md:text-6xl">LET'S</h2>
